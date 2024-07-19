@@ -1,18 +1,27 @@
-import { ActionTypes } from "../constants/action-types";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialProductState = {
   products: [],
+  selectedProduct: null,
 };
 
-export const productReducer = (
-  state = initialProductState,
-  { type, payload }
-) => {
-  switch (type) {
-    case ActionTypes.SET_PRODUCTS:
-      return state;
+export const productSlice = createSlice({
+  name: "products",
+  initialState: initialProductState,
+  reducers: {
+    setProducts: (state, action) => {
+      state.products = action.payload;
+    },
+    setSelectedProduct: (state, action) => {
+      state.selectedProduct = action.payload;
+    },
+    removeSelectedProduct: (state) => {
+      state.selectedProduct = null;
+    },
+  },
+});
 
-    default:
-      break;
-  }
-};
+export const { setProducts, setSelectedProduct, removeSelectedProduct } =
+  productSlice.actions;
+
+export default productSlice.reducer;
