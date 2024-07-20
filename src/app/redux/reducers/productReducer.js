@@ -27,11 +27,29 @@ export const productSlice = createSlice({
       state.selectedProduct = action.payload;
     },
     addToCart: (state, action) => {
-      state.cart.push(action.payload);
+      const existingProduct = state.cart.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingProduct) {
+        existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+      } else {
+        state.cart.push({ ...action.payload, quantity: 1 });
+      }
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     removeFromCart: (state, action) => {
-      state.cart = state.cart.filter((item) => item.id !== action.payload.id);
+      const existingProduct = state.cart.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingProduct) {
+        if (existingProduct.quantity > 1) {
+          existingProduct.quantity -= 1;
+        } else {
+          state.cart = state.cart.filter(
+            (item) => item.id !== action.payload.id
+          );
+        }
+      }
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
   },
