@@ -15,7 +15,7 @@ interface Checkout {
   model: string;
   brand: string;
   createdAt: string;
-  quantity: string;
+  quantity: number;
 }
 
 interface RootState {
@@ -49,7 +49,6 @@ const Checkout = () => {
         borderRadius: "5px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
         position: "absolute",
-
         right: "85px",
       }}
     >
@@ -70,7 +69,9 @@ const Checkout = () => {
           >
             <List.Item.Meta
               title={item.name}
-              description={`${parseFloat(item.price).toFixed(2)} ₺`}
+              description={`${(parseFloat(item.price) * item.quantity).toFixed(
+                2
+              )} ₺`}
               style={{ textAlign: "left" }}
             />
           </List.Item>
@@ -79,5 +80,4 @@ const Checkout = () => {
     </div>
   );
 };
-
 export default Checkout;

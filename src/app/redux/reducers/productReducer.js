@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const addProductToLocalStorage = () => {
+const loadCartFromLocalStorage = () => {
   try {
-    const selectedProduct = localStorage.getItem("cart");
-    return selectedProduct ? JSON.parse(selectedProduct) : [];
-  } catch (e) {
-    console.error("Could not load product from localStorage", e);
+    const cart = localStorage.getItem("cart");
+    return cart ? JSON.parse(cart) : [];
+  } catch (error) {
+    console.error("Failed to load cart from localStorage:", error);
     return [];
   }
 };
@@ -13,10 +13,10 @@ const addProductToLocalStorage = () => {
 const initialProductState = {
   products: [],
   selectedProduct: null,
-  cart: addProductToLocalStorage(),
+  cart: loadCartFromLocalStorage(),
 };
 
-export const productSlice = createSlice({
+const productSlice = createSlice({
   name: "products",
   initialState: initialProductState,
   reducers: {
@@ -27,29 +27,31 @@ export const productSlice = createSlice({
       state.selectedProduct = action.payload;
     },
     addToCart: (state, action) => {
-      const existingProduct = state.cart.find(
-        (item) => item.id === action.payload.id
-      );
+      const product = action.payload;
+      const existingProduct = state.cart.find((item) => item.id === product.id);
+
       if (existingProduct) {
-        existingProduct.quantity = (existingProduct.quantity || 1) + 1;
+        existingProduct.quantity += 1;
       } else {
-        state.cart.push({ ...action.payload, quantity: 1 });
+        state.cart.push({ ...product, quantity: 1 });
       }
+
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
     removeFromCart: (state, action) => {
-      const existingProduct = state.cart.find(
-        (item) => item.id === action.payload.id
-      );
-      if (existingProduct) {
-        if (existingProduct.quantity > 1) {
-          existingProduct.quantity -= 1;
+      const productId = action.payload.id;
+
+      state.cart = state.cart.reduce((updatedCart, item) => {
+        if (item.id === productId) {
+          if (item.quantity > 1) {
+            updatedCart.push({ ...item, quantity: item.quantity - 1 });
+          }
         } else {
-          state.cart = state.cart.filter(
-            (item) => item.id !== action.payload.id
-          );
+          updatedCart.push(item);
         }
-      }
+        return updatedCart;
+      }, []);
+
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
   },

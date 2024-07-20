@@ -14,6 +14,7 @@ interface ICheckout {
   model: string;
   brand: string;
   createdAt: string;
+  quantity: number;
 }
 
 interface RootState {
@@ -30,7 +31,7 @@ const Header = () => {
   const cart = useSelector((state: RootState) => state.allProducts.cart);
 
   const totalPrice = cart
-    .reduce((sum, item) => sum + parseFloat(item.price), 0)
+    .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
     .toFixed(2);
 
   return (
@@ -104,5 +105,4 @@ const Header = () => {
     </>
   );
 };
-
 export default Header;
