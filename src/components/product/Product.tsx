@@ -7,6 +7,8 @@ import {
 import { productService } from "../../service/product/product.service.ts";
 import styles from "./Product.module.scss";
 import { Link } from "react-router-dom";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface Product {
   id: number;
@@ -55,7 +57,17 @@ const Product = () => {
   return (
     <div className={styles.productGrid}>
       {products.length === 0 ? (
-        <div>No products available</div>
+        <Spin
+          indicator={
+            <LoadingOutlined
+              style={{
+                fontSize: 250,
+                marginTop: 250,
+              }}
+              spin
+            />
+          }
+        />
       ) : (
         products.map((product) => (
           <div key={product.id} className={styles.cardContainer}>
