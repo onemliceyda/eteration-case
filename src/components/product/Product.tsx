@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../app/redux/reducers/productReducer.js";
+import {
+  setProducts,
+  addToCart,
+} from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
 import styles from "./Product.module.scss";
 import { Link } from "react-router-dom";
@@ -9,7 +12,7 @@ interface Product {
   id: number;
   name: string;
   image: string;
-  price: number;
+  price: string;
   description: string;
   model: string;
   brand: string;
@@ -20,21 +23,19 @@ interface RootState {
   allProducts: {
     products: Product[];
     selectedProduct: Product | null;
+    cart: Product[];
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product = () => {
   const products = useSelector(
     (state: RootState) => state.allProducts.products
   );
-
   const dispatch = useDispatch();
 
   const getProducts = async () => {
     try {
       const response = await productService.getAllProducts();
-
       if (response && response.data) {
         dispatch(setProducts(response.data));
       }
@@ -45,8 +46,11 @@ const Product = () => {
 
   useEffect(() => {
     getProducts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  const handleAddToCart = (product: Product) => {
+    dispatch(addToCart(product));
+  };
 
   return (
     <div className={styles.productGrid}>
@@ -64,12 +68,19 @@ const Product = () => {
                 />
               </div>
             </Link>
-            <div className={styles.price}>{product.price} ₺</div>
+            <div className={styles.price}>
+              {parseFloat(product.price).toFixed(2)} ₺
+            </div>
             <div className={styles.productName}>{product.name}</div>
             <div className={styles.productDescription}>
               {product.description}
             </div>
-            <button className={styles.addToCartButton}>Add to Cart</button>
+            <button
+              className={styles.addToCartButton}
+              onClick={() => handleAddToCart(product)}
+            >
+              Add to Cart
+            </button>
           </div>
         ))
       )}

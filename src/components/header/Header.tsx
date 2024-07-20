@@ -1,10 +1,35 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Badge, Button, Col, Input, Layout, Row } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+
+interface Product {
+  id: number;
+  name: string;
+  image: string;
+  price: string;
+  description: string;
+  model: string;
+  brand: string;
+  createdAt: string;
+}
+
+interface RootState {
+  allProducts: {
+    products: Product[];
+    selectedProduct: Product | null;
+    cart: Product[];
+  };
+}
 
 const Header = () => {
   const { Header } = Layout;
   const { Search } = Input;
+  const cart = useSelector((state: RootState) => state.allProducts.cart);
+
+  const totalPrice = cart
+    .reduce((sum, item) => sum + parseFloat(item.price), 0)
+    .toFixed(2);
 
   return (
     <Header
@@ -38,7 +63,6 @@ const Header = () => {
           </div>
         </Col>
         <Col
-          flex="100px"
           style={{
             textAlign: "right",
             display: "flex",
@@ -46,7 +70,7 @@ const Header = () => {
             alignItems: "center",
           }}
         >
-          <Badge count={5}>
+          <Badge count={cart.length}>
             <Button
               type="link"
               icon={<ShoppingCartOutlined />}
@@ -55,6 +79,11 @@ const Header = () => {
               }}
             />
           </Badge>
+          <span
+            style={{ color: "#fff", marginLeft: "10px", marginBottom: "3px" }}
+          >
+            {totalPrice} ₺
+          </span>
         </Col>
       </Row>
     </Header>

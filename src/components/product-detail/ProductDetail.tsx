@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { productService } from "../../service/product/product.service.ts";
-import { setSelectedProduct } from "../../app/redux/reducers/productReducer";
+import {
+  setSelectedProduct,
+  addToCart,
+} from "../../app/redux/reducers/productReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ProductDetail.module.scss";
 
@@ -9,7 +12,7 @@ interface Product {
   id: number;
   name: string;
   image: string;
-  price: number;
+  price: string;
   description: string;
   model: string;
   brand: string;
@@ -20,6 +23,7 @@ interface RootState {
   allProducts: {
     products: Product[];
     selectedProduct: Product | null;
+    cart: Product[];
   };
 }
 
@@ -50,6 +54,10 @@ const ProductDetail = () => {
     return <div>Loading...</div>;
   }
 
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+  };
+
   return (
     <div className={styles.cardContainer}>
       <div className={styles.imageContainer}>
@@ -61,8 +69,12 @@ const ProductDetail = () => {
       </div>
       <div className={styles.productDetails}>
         <div className={styles.productName}>{product.name}</div>
-        <div className={styles.price}>{product.price} ₺</div>
-        <button className={styles.addToCartButton}>Add to Cart</button>
+        <div className={styles.price}>
+          {parseFloat(product.price).toFixed(2)} ₺
+        </div>
+        <button className={styles.addToCartButton} onClick={handleAddToCart}>
+          Add to Cart
+        </button>
         <div className={styles.productDescription}>{product.description}</div>
       </div>
     </div>
