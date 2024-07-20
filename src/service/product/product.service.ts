@@ -10,6 +10,14 @@ const getAllProducts = async () => {
   return response;
 };
 
+const getProductById = async (id: string) => {
+  const response = await axios.get(`${API_URL}/${id}`).catch((err) => {
+    console.log(err);
+  });
+  return response;
+};
+
 export const productService = {
   getAllProducts,
+  getProductById,
 };

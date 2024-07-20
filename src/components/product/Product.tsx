@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
 import styles from "./Product.module.scss";
+import { Link } from "react-router-dom";
+
 interface Product {
   id: number;
   name: string;
@@ -26,11 +28,13 @@ const Product = () => {
   const products = useSelector(
     (state: RootState) => state.allProducts.products
   );
+
   const dispatch = useDispatch();
 
   const getProducts = async () => {
     try {
       const response = await productService.getAllProducts();
+
       if (response && response.data) {
         dispatch(setProducts(response.data));
       }
@@ -51,13 +55,15 @@ const Product = () => {
       ) : (
         products.map((product) => (
           <div key={product.id} className={styles.cardContainer}>
-            <div className={styles.imageContainer}>
-              <img
-                src={product.image}
-                alt={product.name}
-                className={styles.productImage}
-              />
-            </div>
+            <Link to={`/product/${product.id}`}>
+              <div className={styles.imageContainer}>
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className={styles.productImage}
+                />
+              </div>
+            </Link>
             <div className={styles.price}>{product.price} ₺</div>
             <div className={styles.productName}>{product.name}</div>
             <div className={styles.productDescription}>

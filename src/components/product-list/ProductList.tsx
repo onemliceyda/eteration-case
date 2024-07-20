@@ -1,11 +1,7 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Product from "../product/Product.tsx";
 
 const ProductList = () => {
-  const products = useSelector((state) => state);
-  console.log(products, "products kısmı burası");
-
   return (
     <>
       <div>
