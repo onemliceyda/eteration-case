@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setProducts } from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
 import styles from "./Product.module.scss";
-
 interface Product {
   id: number;
   name: string;
@@ -21,27 +21,28 @@ interface RootState {
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 const Product = () => {
-  const productsFromState = useSelector(
+  const products = useSelector(
     (state: RootState) => state.allProducts.products
   );
-
-  const [products, setProducts] = useState<Product[]>(productsFromState);
+  const dispatch = useDispatch();
 
   const getProducts = async () => {
     try {
       const response = await productService.getAllProducts();
       if (response && response.data) {
-        setProducts(response.data);
+        dispatch(setProducts(response.data));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     getProducts();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   return (
     <div className={styles.productGrid}>
