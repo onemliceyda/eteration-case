@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import Checkout from "../checkout-card/Checkout.tsx";
 import BrandFilter from "../brand-filter/BrandFilter.tsx";
 import ModelFilter from "../model-filter/ModelFilter.tsx";
+import Sort from "../sort/Sort.tsx";
 
 interface Product {
   id: number;
@@ -59,6 +60,7 @@ const Product = () => {
   return (
     <div className={styles.container}>
       <div className={styles.filterColumn}>
+        <Sort />
         <BrandFilter />
         <ModelFilter />
       </div>

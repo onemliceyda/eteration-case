@@ -18,10 +18,11 @@ const initialProductState = {
   brandFilter: [],
   modelFilter: [],
   filteredProducts: [],
+  sortOption: null,
 };
 
-const filterProducts = (state) => {
-  state.filteredProducts = state.products.filter((product) => {
+const filterAndSortProducts = (state) => {
+  const filtered = state.products.filter((product) => {
     const matchesSearchTerm = product.name
       .toLowerCase()
       .includes(state.searchTerm.toLowerCase());
@@ -33,6 +34,34 @@ const filterProducts = (state) => {
       state.modelFilter.includes(product.model);
     return matchesSearchTerm && matchesBrandFilter && matchesModelFilter;
   });
+
+  switch (state.sortOption) {
+    case "highToLow":
+      state.filteredProducts = filtered.sort(
+        (a, b) => parseFloat(b.price) - parseFloat(a.price)
+      );
+      break;
+    case "lowToHigh":
+      state.filteredProducts = filtered.sort(
+        (a, b) => parseFloat(a.price) - parseFloat(b.price)
+      );
+      break;
+    case "newToOld":
+      state.filteredProducts = filtered.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      break;
+    case "oldToNew":
+      state.filteredProducts = filtered.sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
+      break;
+    default:
+      state.filteredProducts = filtered;
+      break;
+  }
 };
 
 const productSlice = createSlice({
@@ -41,7 +70,7 @@ const productSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
-      filterProducts(state);
+      filterAndSortProducts(state);
     },
     setSelectedProduct: (state, action) => {
       state.selectedProduct = action.payload;
@@ -76,15 +105,19 @@ const productSlice = createSlice({
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
-      filterProducts(state);
+      filterAndSortProducts(state);
     },
     setBrandFilter: (state, action) => {
       state.brandFilter = action.payload;
-      filterProducts(state);
+      filterAndSortProducts(state);
     },
     setModelFilter: (state, action) => {
       state.modelFilter = action.payload;
-      filterProducts(state);
+      filterAndSortProducts(state);
+    },
+    setSortOption: (state, action) => {
+      state.sortOption = action.payload;
+      filterAndSortProducts(state);
     },
   },
 });
@@ -97,6 +130,7 @@ export const {
   setSearchTerm,
   setBrandFilter,
   setModelFilter,
+  setSortOption,
 } = productSlice.actions;
 
 export const selectTotalQuantity = (state) =>

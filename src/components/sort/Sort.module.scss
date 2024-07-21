@@ -1,0 +1,37 @@
+.sortOptions {
+  width: 220px;
+  height: 205px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: "Montserrat";
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+
+  & span {
+    font-weight: bold;
+    color: #2a59fe;
+    margin-bottom: 8px;
+  }
+
+  .optionList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
