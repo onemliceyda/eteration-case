@@ -5,6 +5,7 @@ import {
   removeFromCart,
 } from "../../app/redux/reducers/productReducer";
 import styles from "./Checkout.module.scss";
+import totalPrice from "../../app/helpers/totalPrice";
 
 interface Checkout {
   id: number;
@@ -38,10 +39,6 @@ const Checkout = () => {
     dispatch(removeFromCart(product));
   };
 
-  const totalPrice = cart
-    .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
-    .toFixed(2);
-
   return (
     !!cart.length && (
       <>
@@ -66,7 +63,9 @@ const Checkout = () => {
             ))}
           </ul>
           <div className={styles.totalContainer}>
-            <div className={styles.totalText}>Total Price: {totalPrice} ₺</div>
+            <div className={styles.totalText}>
+              Total Price: {totalPrice(cart)} ₺
+            </div>
             <button className={styles.checkoutButton}>Checkout</button>
           </div>
         </div>

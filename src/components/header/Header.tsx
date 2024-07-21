@@ -12,6 +12,7 @@ import {
   setSearchTerm,
 } from "../../app/redux/reducers/productReducer.js";
 import styles from "./Header.module.scss";
+import totalPrice from "../../app/helpers/totalPrice.js";
 
 interface ICheckout {
   id: number;
@@ -43,10 +44,6 @@ const Header = () => {
   const searchTerm = useSelector(
     (state: RootState) => state.allProducts.searchTerm
   );
-
-  const totalPrice = cart
-    .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
-    .toFixed(2);
 
   const handleSearchChange = (e: any) => {
     dispatch(setSearchTerm(e.target.value));
@@ -109,7 +106,7 @@ const Header = () => {
                   fontFamily: "Montserrat",
                 }}
               >
-                {totalPrice} ₺
+                {totalPrice(cart)} ₺
               </span>
               <UserOutlined
                 style={{
