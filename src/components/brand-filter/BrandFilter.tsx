@@ -10,6 +10,7 @@ const BrandFilter = () => {
   const dispatch = useDispatch();
   const brands = useSelector(selectBrands);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleBrandChange = (brand) => {
     const updatedSelectedBrands = selectedBrands.includes(brand)
@@ -19,11 +20,24 @@ const BrandFilter = () => {
     dispatch(setBrandFilter(updatedSelectedBrands));
   };
 
-  const sortedBrands = brands.slice().sort((a, b) => a.localeCompare(b));
+  const filteredModels = brands.filter((model) =>
+    model.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const sortedBrands = filteredModels
+    .slice()
+    .sort((a, b) => a.localeCompare(b));
 
   return (
     <div className={styles.brandFilter}>
       <span>Brand</span>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
       <div className={styles.brandList}>
         {sortedBrands.map((brand) => (
           <div key={brand}>
