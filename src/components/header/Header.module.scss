@@ -1,0 +1,8 @@
+.header {
+  background-color: #2a59fe;
+  height: 64px;
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
+}

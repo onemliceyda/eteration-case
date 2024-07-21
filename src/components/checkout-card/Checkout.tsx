@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   addToCart,
@@ -43,29 +43,35 @@ const Checkout = () => {
     .toFixed(2);
 
   return (
-    <>
-      <div className={styles.checkoutContainer}>
-        <ul className={styles.list}>
-          {cart.map((item) => (
-            <li key={item.id} className={styles.listItem}>
-              <div className={styles.listItemMeta}>
-                <span>{item.name}</span>
-                <h5 className={styles.price}>{item.price} ₺</h5>
-              </div>
-              <div className={styles.actions}>
-                <button onClick={() => handleDecreaseQuantity(item)}>-</button>
-                <span className={styles.quantity}>{item.quantity}</span>
-                <button onClick={() => handleIncreaseQuantity(item)}>+</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className={styles.totalContainer}>
-          <div className={styles.totalText}>Total Price: {totalPrice} ₺</div>
-          <button className={styles.checkoutButton}>Checkout</button>
+    !!cart.length && (
+      <>
+        <div className={styles.checkoutContainer}>
+          <ul className={styles.list}>
+            {cart.map((item) => (
+              <li key={item.id} className={styles.listItem}>
+                <div className={styles.listItemMeta}>
+                  <div>{item.name}</div>
+                  <div className={styles.price}>{item.price} ₺</div>
+                </div>
+                <div className={styles.actions}>
+                  <button onClick={() => handleDecreaseQuantity(item)}>
+                    -
+                  </button>
+                  <span className={styles.quantity}>{item.quantity}</span>
+                  <button onClick={() => handleIncreaseQuantity(item)}>
+                    +
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className={styles.totalContainer}>
+            <div className={styles.totalText}>Total Price: {totalPrice} ₺</div>
+            <button className={styles.checkoutButton}>Checkout</button>
+          </div>
         </div>
-      </div>
-    </>
+      </>
+    )
   );
 };
 export default Checkout;

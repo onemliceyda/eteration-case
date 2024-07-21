@@ -1,12 +1,17 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, Col, Input, Layout, Row } from "antd";
-import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  ShoppingCartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import {
   selectTotalQuantity,
   setSearchTerm,
 } from "../../app/redux/reducers/productReducer.js";
+import styles from "./Header.module.scss";
 
 interface ICheckout {
   id: number;
@@ -49,13 +54,12 @@ const Header = () => {
 
   return (
     <>
-      <Header
-        style={{
-          backgroundColor: "#2A59FE",
-          width: "100%",
-        }}
-      >
-        <Row justify="space-between" align="middle" style={{ width: "100%" }}>
+      <Header className={styles.header}>
+        <Row
+          justify="space-between"
+          align="middle"
+          style={{ width: "100%", height: "" }}
+        >
           <Col>
             <Link to={"/"}>
               <h4
@@ -106,6 +110,22 @@ const Header = () => {
                 }}
               >
                 {totalPrice} ₺
+              </span>
+              <UserOutlined
+                style={{
+                  color: "#fff",
+                  marginLeft: "25px",
+                  fontFamily: "Montserrat",
+                }}
+              />
+              <span
+                style={{
+                  color: "#fff",
+                  marginLeft: "10px",
+                  fontFamily: "Montserrat",
+                }}
+              >
+                Ceyda
               </span>
             </div>
           </Col>
