@@ -15,7 +15,24 @@ const initialProductState = {
   selectedProduct: null,
   cart: loadCartFromLocalStorage(),
   searchTerm: "",
+  brandFilter: [],
+  modelFilter: [],
   filteredProducts: [],
+};
+
+const filterProducts = (state) => {
+  state.filteredProducts = state.products.filter((product) => {
+    const matchesSearchTerm = product.name
+      .toLowerCase()
+      .includes(state.searchTerm.toLowerCase());
+    const matchesBrandFilter =
+      state.brandFilter.length === 0 ||
+      state.brandFilter.includes(product.brand);
+    const matchesModelFilter =
+      state.modelFilter.length === 0 ||
+      state.modelFilter.includes(product.model);
+    return matchesSearchTerm && matchesBrandFilter && matchesModelFilter;
+  });
 };
 
 const productSlice = createSlice({
@@ -24,9 +41,7 @@ const productSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
-      state.filteredProducts = state.products.filter((product) =>
-        product.name.toLowerCase().includes(state.searchTerm.toLowerCase())
-      );
+      filterProducts(state);
     },
     setSelectedProduct: (state, action) => {
       state.selectedProduct = action.payload;
@@ -61,10 +76,15 @@ const productSlice = createSlice({
     },
     setSearchTerm: (state, action) => {
       state.searchTerm = action.payload;
-
-      state.filteredProducts = state.products.filter((product) =>
-        product.name.toLowerCase().includes(action.payload.toLowerCase())
-      );
+      filterProducts(state);
+    },
+    setBrandFilter: (state, action) => {
+      state.brandFilter = action.payload;
+      filterProducts(state);
+    },
+    setModelFilter: (state, action) => {
+      state.modelFilter = action.payload;
+      filterProducts(state);
     },
   },
 });
@@ -75,6 +95,8 @@ export const {
   addToCart,
   removeFromCart,
   setSearchTerm,
+  setBrandFilter,
+  setModelFilter,
 } = productSlice.actions;
 
 export const selectTotalQuantity = (state) =>
@@ -82,5 +104,13 @@ export const selectTotalQuantity = (state) =>
 
 export const selectFilteredProducts = (state) =>
   state.allProducts.filteredProducts;
+
+export const selectBrands = (state) => [
+  ...new Set(state.allProducts.products.map((product) => product.brand)),
+];
+
+export const selectModels = (state) => [
+  ...new Set(state.allProducts.products.map((product) => product.model)),
+];
 
 export default productSlice.reducer;

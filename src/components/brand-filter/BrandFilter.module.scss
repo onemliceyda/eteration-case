@@ -1,0 +1,22 @@
+.brandFilter,
+.modelFilter {
+  width: 220px;
+  height: 205px;
+  overflow-y: auto;
+  background-color: #f8f8f8;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.brandFilter h3,
+.modelFilter h3 {
+  margin-bottom: 16px;
+}
+
+.brandList,
+.modelList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
