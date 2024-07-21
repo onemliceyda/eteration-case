@@ -6,9 +6,9 @@ import {
   addToCart,
 } from "../../app/redux/reducers/productReducer.js";
 import { useDispatch, useSelector } from "react-redux";
-
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import Checkout from "../checkout-card/Checkout.tsx";
 import styles from "./ProductDetail.module.scss";
 
 interface Product {
@@ -74,23 +74,28 @@ const ProductDetail = () => {
   };
 
   return (
-    <div className={styles.cardContainer}>
-      <div className={styles.imageContainer}>
-        <img
-          src={product.image}
-          alt={product.name}
-          className={styles.productImage}
-        />
-      </div>
-      <div className={styles.productDetails}>
-        <div className={styles.productName}>{product.name}</div>
-        <div className={styles.price}>
-          {parseFloat(product.price).toFixed(2)} ₺
+    <div className={styles.container}>
+      <div className={styles.cardContainer}>
+        <div className={styles.imageContainer}>
+          <img
+            src={product.image}
+            alt={product.name}
+            className={styles.productImage}
+          />
         </div>
-        <button className={styles.addToCartButton} onClick={handleAddToCart}>
-          Add to Cart
-        </button>
-        <div className={styles.productDescription}>{product.description}</div>
+        <div className={styles.productDetails}>
+          <div className={styles.productName}>{product.name}</div>
+          <div className={styles.price}>
+            {parseFloat(product.price).toFixed(2)} ₺
+          </div>
+          <button className={styles.addToCartButton} onClick={handleAddToCart}>
+            Add to Cart
+          </button>
+          <div className={styles.productDescription}>{product.description}</div>
+        </div>
+      </div>
+      <div style={{ marginRight: "150px", marginTop: "10px" }}>
+        <Checkout />
       </div>
     </div>
   );
