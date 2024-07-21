@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setProducts,
@@ -6,10 +6,10 @@ import {
   selectFilteredProducts,
 } from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
+import { Spin, Pagination } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import styles from "./Product.module.scss";
 import { Link } from "react-router-dom";
-import { Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
 
 interface Product {
   id: number;
@@ -22,19 +22,12 @@ interface Product {
   createdAt: string;
 }
 
-interface RootState {
-  allProducts: {
-    products: Product[];
-    selectedProduct: Product | null;
-    cart: Product[];
-    filteredProducts: Product[];
-    searchTerm: string;
-  };
-}
+const PAGE_SIZE = 12;
 
 const Product = () => {
-  const filteredProducts = useSelector(selectFilteredProducts);
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
+  const filteredProducts = useSelector(selectFilteredProducts);
 
   const getProducts = async () => {
     try {
@@ -55,48 +48,62 @@ const Product = () => {
     dispatch(addToCart(product));
   };
 
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
   return (
-    <div className={styles.productGrid}>
-      {filteredProducts.length === 0 ? (
-        <Spin
-          indicator={
-            <LoadingOutlined
-              style={{
-                fontSize: 250,
-                marginTop: 250,
-              }}
-              spin
-            />
-          }
-        />
-      ) : (
-        filteredProducts.map((product) => (
-          <div key={product.id} className={styles.cardContainer}>
-            <Link to={`/product/${product.id}`}>
-              <div className={styles.imageContainer}>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className={styles.productImage}
-                />
+    <div>
+      <div className={styles.productGrid}>
+        {filteredProducts.length === 0 ? (
+          <Spin
+            indicator={
+              <LoadingOutlined
+                style={{
+                  fontSize: 250,
+                  marginTop: 250,
+                }}
+                spin
+              />
+            }
+          />
+        ) : (
+          paginatedProducts.map((product) => (
+            <div key={product.id} className={styles.cardContainer}>
+              <Link to={`/product/${product.id}`}>
+                <div className={styles.imageContainer}>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className={styles.productImage}
+                  />
+                </div>
+              </Link>
+              <div className={styles.price}>
+                {parseFloat(product.price).toFixed(2)} ₺
               </div>
-            </Link>
-            <div className={styles.price}>
-              {parseFloat(product.price).toFixed(2)} ₺
+              <div className={styles.productName}>{product.name}</div>
+              <div className={styles.productDescription}>
+                {product.description}
+              </div>
+              <button
+                className={styles.addToCartButton}
+                onClick={() => handleAddToCart(product)}
+              >
+                Add to Cart
+              </button>
             </div>
-            <div className={styles.productName}>{product.name}</div>
-            <div className={styles.productDescription}>
-              {product.description}
-            </div>
-            <button
-              className={styles.addToCartButton}
-              onClick={() => handleAddToCart(product)}
-            >
-              Add to Cart
-            </button>
-          </div>
-        ))
-      )}
+          ))
+        )}
+      </div>
+      <Pagination
+        current={currentPage}
+        pageSize={PAGE_SIZE}
+        total={filteredProducts.length}
+        onChange={(page) => setCurrentPage(page)}
+        style={{ marginTop: 20, textAlign: "center" }}
+      />
     </div>
   );
 };

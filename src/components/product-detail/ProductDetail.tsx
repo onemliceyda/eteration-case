@@ -6,9 +6,10 @@ import {
   addToCart,
 } from "../../app/redux/reducers/productReducer.js";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./ProductDetail.module.scss";
+
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import styles from "./ProductDetail.module.scss";
 
 interface Product {
   id: number;
