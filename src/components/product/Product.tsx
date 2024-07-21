@@ -10,6 +10,7 @@ import { Spin, Pagination } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import styles from "./Product.module.scss";
 import { Link } from "react-router-dom";
+import Checkout from "../checkout-card/Checkout.tsx";
 
 interface Product {
   id: number;
@@ -54,7 +55,11 @@ const Product = () => {
   );
 
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.filterColumn}>
+        {/* Filter content goes here */}
+        <p>Filter</p>
+      </div>
       <div className={styles.productGrid}>
         {filteredProducts.length === 0 ? (
           <Spin
@@ -97,13 +102,15 @@ const Product = () => {
           ))
         )}
       </div>
-      <Pagination
-        current={currentPage}
-        pageSize={PAGE_SIZE}
-        total={filteredProducts.length}
-        onChange={(page) => setCurrentPage(page)}
-        style={{ marginTop: 20, textAlign: "center" }}
-      />
+      <div className={styles.paginationWrapper}>
+        <Pagination
+          current={currentPage}
+          pageSize={PAGE_SIZE}
+          total={filteredProducts.length}
+          onChange={(page) => setCurrentPage(page)}
+        />
+      </div>
+      <Checkout />
     </div>
   );
 };

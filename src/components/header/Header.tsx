@@ -53,7 +53,6 @@ const Header = () => {
       <Header
         style={{
           backgroundColor: "#2A59FE",
-          padding: "0 20px",
           width: "100%",
         }}
       >
@@ -88,6 +87,7 @@ const Header = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-end",
+                marginRight: "30px",
               }}
             >
               <Badge count={totalQuantity}>
@@ -112,7 +112,6 @@ const Header = () => {
           </Col>
         </Row>
       </Header>
-      <Checkout />
     </>
   );
 };
