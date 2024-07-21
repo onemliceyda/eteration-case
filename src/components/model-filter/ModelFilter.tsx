@@ -24,6 +24,10 @@ const ModelFilter = () => {
     model.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const sortedBrands = filteredModels
+    .slice()
+    .sort((a, b) => a.localeCompare(b));
+
   return (
     <div className={styles.modelFilter}>
       <span>Model</span>
@@ -35,7 +39,7 @@ const ModelFilter = () => {
         className={styles.searchInput}
       />
       <div className={styles.modelList}>
-        {filteredModels.map((model) => (
+        {sortedBrands.map((model) => (
           <div key={model}>
             <label>
               <input

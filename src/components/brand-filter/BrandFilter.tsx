@@ -19,11 +19,13 @@ const BrandFilter = () => {
     dispatch(setBrandFilter(updatedSelectedBrands));
   };
 
+  const sortedBrands = brands.slice().sort((a, b) => a.localeCompare(b));
+
   return (
     <div className={styles.brandFilter}>
       <span>Brand</span>
       <div className={styles.brandList}>
-        {brands.map((brand) => (
+        {sortedBrands.map((brand) => (
           <div key={brand}>
             <label>
               <input
