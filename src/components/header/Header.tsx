@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, Col, Input, Layout, Row } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-import Checkout from "../checkout-card/Checkout.tsx";
 import { Link } from "react-router-dom";
 import {
   selectTotalQuantity,
@@ -44,7 +43,7 @@ const Header = () => {
     .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
     .toFixed(2);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: any) => {
     dispatch(setSearchTerm(e.target.value));
   };
 

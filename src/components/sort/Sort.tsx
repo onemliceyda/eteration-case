@@ -5,7 +5,7 @@ import styles from "./Sort.module.scss";
 
 const Sort = () => {
   const dispatch = useDispatch();
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleSortChange = (option: string) => {
     const newOption = selectedOption === option ? null : option;

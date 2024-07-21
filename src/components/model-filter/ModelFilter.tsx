@@ -9,7 +9,7 @@ import styles from "./ModelFilter.module.scss";
 const ModelFilter = () => {
   const dispatch = useDispatch();
   const models = useSelector(selectModels);
-  const [selectedModels, setSelectedModels] = useState<string[]>([]);
+  const [selectedModels, setSelectedModels] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleModelChange = (model: string) => {

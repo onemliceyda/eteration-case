@@ -144,7 +144,7 @@ export const selectBrands = (state) => [
 ];
 
 export const selectModels = (state) => [
-  ...new Set(state.allProducts.products.map((product) => product.model)),
+  ...new Set(state.allProducts?.products.map((product) => product.model)),
 ];
 
 export default productSlice.reducer;

@@ -9,7 +9,7 @@ import styles from "./BrandFilter.module.scss";
 const BrandFilter = () => {
   const dispatch = useDispatch();
   const brands = useSelector(selectBrands);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleBrandChange = (brand) => {
