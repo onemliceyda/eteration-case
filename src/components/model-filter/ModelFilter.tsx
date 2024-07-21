@@ -10,8 +10,9 @@ const ModelFilter = () => {
   const dispatch = useDispatch();
   const models = useSelector(selectModels);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleModelChange = (model) => {
+  const handleModelChange = (model: string) => {
     const updatedSelectedModels = selectedModels.includes(model)
       ? selectedModels.filter((m) => m !== model)
       : [...selectedModels, model];
@@ -19,11 +20,22 @@ const ModelFilter = () => {
     dispatch(setModelFilter(updatedSelectedModels));
   };
 
+  const filteredModels = models.filter((model) =>
+    model.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.modelFilter}>
-      <h3>Filter by Model</h3>
+      <span>Model</span>
+      <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
       <div className={styles.modelList}>
-        {models.map((model) => (
+        {filteredModels.map((model) => (
           <div key={model}>
             <label>
               <input

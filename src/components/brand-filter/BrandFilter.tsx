@@ -21,7 +21,7 @@ const BrandFilter = () => {
 
   return (
     <div className={styles.brandFilter}>
-      <h3>Filter by Brand</h3>
+      <span>Brand</span>
       <div className={styles.brandList}>
         {brands.map((brand) => (
           <div key={brand}>
