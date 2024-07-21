@@ -14,6 +14,8 @@ const initialProductState = {
   products: [],
   selectedProduct: null,
   cart: loadCartFromLocalStorage(),
+  searchTerm: "",
+  filteredProducts: [],
 };
 
 const productSlice = createSlice({
@@ -22,6 +24,9 @@ const productSlice = createSlice({
   reducers: {
     setProducts: (state, action) => {
       state.products = action.payload;
+      state.filteredProducts = state.products.filter((product) =>
+        product.name.toLowerCase().includes(state.searchTerm.toLowerCase())
+      );
     },
     setSelectedProduct: (state, action) => {
       state.selectedProduct = action.payload;
@@ -54,13 +59,28 @@ const productSlice = createSlice({
 
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+
+      state.filteredProducts = state.products.filter((product) =>
+        product.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
   },
 });
 
-export const { setProducts, setSelectedProduct, addToCart, removeFromCart } =
-  productSlice.actions;
+export const {
+  setProducts,
+  setSelectedProduct,
+  addToCart,
+  removeFromCart,
+  setSearchTerm,
+} = productSlice.actions;
 
 export const selectTotalQuantity = (state) =>
   state.allProducts.cart.reduce((total, item) => total + item.quantity, 0);
+
+export const selectFilteredProducts = (state) =>
+  state.allProducts.filteredProducts;
 
 export default productSlice.reducer;

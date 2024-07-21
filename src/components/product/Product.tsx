@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setProducts,
   addToCart,
+  setSearchTerm,
+  selectFilteredProducts,
 } from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
 import styles from "./Product.module.scss";
@@ -26,13 +28,13 @@ interface RootState {
     products: Product[];
     selectedProduct: Product | null;
     cart: Product[];
+    filteredProducts: Product[];
+    searchTerm: string;
   };
 }
 
 const Product = () => {
-  const products = useSelector(
-    (state: RootState) => state.allProducts.products
-  );
+  const filteredProducts = useSelector(selectFilteredProducts);
   const dispatch = useDispatch();
 
   const getProducts = async () => {
@@ -56,7 +58,7 @@ const Product = () => {
 
   return (
     <div className={styles.productGrid}>
-      {products.length === 0 ? (
+      {filteredProducts.length === 0 ? (
         <Spin
           indicator={
             <LoadingOutlined
@@ -69,7 +71,7 @@ const Product = () => {
           }
         />
       ) : (
-        products.map((product) => (
+        filteredProducts.map((product) => (
           <div key={product.id} className={styles.cardContainer}>
             <Link to={`/product/${product.id}`}>
               <div className={styles.imageContainer}>

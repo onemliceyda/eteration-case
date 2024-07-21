@@ -1,11 +1,13 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Badge, Button, Col, Input, Layout, Row } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import Checkout from "../checkout-card/Checkout.tsx";
 import { Link } from "react-router-dom";
-import { selectTotalQuantity } from "../../app/redux/reducers/productReducer.js";
-
+import {
+  selectTotalQuantity,
+  setSearchTerm,
+} from "../../app/redux/reducers/productReducer.js";
 interface ICheckout {
   id: number;
   name: string;
@@ -23,19 +25,27 @@ interface RootState {
     products: ICheckout[];
     selectedProduct: ICheckout | null;
     cart: ICheckout[];
+    searchTerm: string;
   };
 }
 
 const Header = () => {
   const { Header } = Layout;
   const { Search } = Input;
+  const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.allProducts.cart);
+  const totalQuantity = useSelector(selectTotalQuantity);
+  const searchTerm = useSelector(
+    (state: RootState) => state.allProducts.searchTerm
+  );
 
   const totalPrice = cart
     .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
     .toFixed(2);
 
-  const totalQuantity = useSelector(selectTotalQuantity);
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchTerm(e.target.value));
+  };
 
   return (
     <>
@@ -65,10 +75,12 @@ const Header = () => {
         <Row style={{ width: "100%" }}>
           <Col flex="auto">
             <div style={{ marginTop: "30px", marginRight: "600px" }}>
-              <Search
+              <Input
                 placeholder="Search"
-                enterButton={<SearchOutlined />}
+                value={searchTerm}
+                onChange={handleSearchChange}
                 style={{ maxWidth: 400 }}
+                prefix={<SearchOutlined />}
               />
             </div>
           </Col>
