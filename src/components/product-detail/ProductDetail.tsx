@@ -7,6 +7,8 @@ import {
 } from "../../app/redux/reducers/productReducer.js";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./ProductDetail.module.scss";
+import { Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 interface Product {
   id: number;
@@ -51,7 +53,19 @@ const ProductDetail = () => {
   }, [dispatch, productId]);
 
   if (!product) {
-    return <div>Loading...</div>;
+    return (
+      <Spin
+        indicator={
+          <LoadingOutlined
+            style={{
+              fontSize: 250,
+              marginTop: 250,
+            }}
+            spin
+          />
+        }
+      />
+    );
   }
 
   const handleAddToCart = () => {

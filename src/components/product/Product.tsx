@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setProducts,
   addToCart,
-  setSearchTerm,
   selectFilteredProducts,
 } from "../../app/redux/reducers/productReducer.js";
 import { productService } from "../../service/product/product.service.ts";
