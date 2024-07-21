@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, List } from "antd";
 import {
   addToCart,
   removeFromCart,
 } from "../../app/redux/reducers/productReducer";
+import styles from "./Checkout.module.scss";
 
 interface Checkout {
   id: number;
@@ -38,55 +38,34 @@ const Checkout = () => {
     dispatch(removeFromCart(product));
   };
 
+  const totalPrice = cart
+    .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
+    .toFixed(2);
+
   return (
-    <div
-      style={{
-        width: "213px",
-        height: "143px",
-        overflow: "hidden",
-        backgroundColor: "#fff",
-        padding: "10px",
-        borderRadius: "5px",
-        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-        position: "absolute",
-        right: "85px",
-      }}
-    >
-      <List
-        itemLayout="horizontal"
-        dataSource={cart}
-        renderItem={(item) => (
-          <List.Item
-            actions={[
-              <Button onClick={() => handleDecreaseQuantity(item)} size="small">
-                -
-              </Button>,
-              <span
-                style={{
-                  backgroundColor: "#2A59FE",
-                  color: "#fff",
-                  width: "100",
-                }}
-              >
-                {item.quantity}
-              </span>,
-              <Button onClick={() => handleIncreaseQuantity(item)} size="small">
-                +
-              </Button>,
-            ]}
-          >
-            <List.Item.Meta
-              title={item.name}
-              // description={`${(parseFloat(item.price) * item.quantity).toFixed(
-              //   2
-              // )} ₺`}
-              description={item.price}
-              style={{ textAlign: "left" }}
-            />
-          </List.Item>
-        )}
-      />
-    </div>
+    <>
+      <div className={styles.checkoutContainer}>
+        <ul className={styles.list}>
+          {cart.map((item) => (
+            <li key={item.id} className={styles.listItem}>
+              <div className={styles.listItemMeta}>
+                <span>{item.name}</span>
+                <h5 className={styles.price}>{item.price} ₺</h5>
+              </div>
+              <div className={styles.actions}>
+                <button onClick={() => handleDecreaseQuantity(item)}>-</button>
+                <span className={styles.quantity}>{item.quantity}</span>
+                <button onClick={() => handleIncreaseQuantity(item)}>+</button>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className={styles.totalContainer}>
+          <div className={styles.totalText}>Total Price: {totalPrice} ₺</div>
+          <button className={styles.checkoutButton}>Checkout</button>
+        </div>
+      </div>
+    </>
   );
 };
 export default Checkout;
