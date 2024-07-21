@@ -4,6 +4,7 @@ import { Badge, Button, Col, Input, Layout, Row } from "antd";
 import { SearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import Checkout from "../checkout-card/Checkout.tsx";
 import { Link } from "react-router-dom";
+import { selectTotalQuantity } from "../../app/redux/reducers/productReducer.js";
 
 interface ICheckout {
   id: number;
@@ -33,6 +34,8 @@ const Header = () => {
   const totalPrice = cart
     .reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)
     .toFixed(2);
+
+  const totalQuantity = useSelector(selectTotalQuantity);
 
   return (
     <>
@@ -77,7 +80,7 @@ const Header = () => {
               alignItems: "center",
             }}
           >
-            <Badge count={cart.length}>
+            <Badge count={totalQuantity}>
               <Button
                 type="link"
                 icon={<ShoppingCartOutlined />}

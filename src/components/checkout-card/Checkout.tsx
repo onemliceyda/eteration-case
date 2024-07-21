@@ -61,7 +61,15 @@ const Checkout = () => {
               <Button onClick={() => handleDecreaseQuantity(item)} size="small">
                 -
               </Button>,
-              <span>{item.quantity}</span>,
+              <span
+                style={{
+                  backgroundColor: "#2A59FE",
+                  color: "#fff",
+                  width: "100",
+                }}
+              >
+                {item.quantity}
+              </span>,
               <Button onClick={() => handleIncreaseQuantity(item)} size="small">
                 +
               </Button>,
@@ -69,9 +77,10 @@ const Checkout = () => {
           >
             <List.Item.Meta
               title={item.name}
-              description={`${(parseFloat(item.price) * item.quantity).toFixed(
-                2
-              )} ₺`}
+              // description={`${(parseFloat(item.price) * item.quantity).toFixed(
+              //   2
+              // )} ₺`}
+              description={item.price}
               style={{ textAlign: "left" }}
             />
           </List.Item>
