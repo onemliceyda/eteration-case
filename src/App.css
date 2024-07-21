@@ -1,3 +1,7 @@
+body {
+  margin: 0;
+  width: 100vw;
+}
 .App {
   text-align: center;
 }

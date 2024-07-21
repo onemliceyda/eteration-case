@@ -64,19 +64,13 @@ const Product = () => {
         <BrandFilter />
         <ModelFilter />
       </div>
-      <div className={styles.productGrid}>
-        {filteredProducts.length === 0 ? (
-          <Spin
-            indicator={
-              <LoadingOutlined
-                style={{
-                  fontSize: 250,
-                  marginTop: 250,
-                }}
-                spin
-              />
-            }
-          />
+      <div
+        className={
+          filteredProducts.length ? styles.productGrid : styles.noFoundData
+        }
+      >
+        {!filteredProducts.length ? (
+          <div>No filtered data found !</div>
         ) : (
           paginatedProducts.map((product) => (
             <div key={product.id} className={styles.cardContainer}>

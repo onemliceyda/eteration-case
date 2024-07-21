@@ -86,7 +86,7 @@ const Header = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "flex-end",
-                marginRight: "30px",
+                marginRight: "100px",
               }}
             >
               <Badge count={totalQuantity}>
